@@ -1,0 +1,17 @@
+---
+- name: Install Java on Windows
+  hosts: 10.10.5.181
+  tasks:
+    - name: Create Temp directory
+      win_file:
+        path: C:\Temp
+        state: directory
+
+    - name: Download Java installer
+      win_get_url:
+        url: "https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.exe"
+        dest: C:\Temp\jdk-17_windows-x64_bin.exe
+
+    - name: Install Java
+      win_shell: |
+        Start-Process -FilePath "C:\Temp\jdk-17_windows-x64_bin.exe" -ArgumentList "/s ADDLOCAL=FeatureMain,FeatureEnvironment,FeatureJarFileRunWith,FeatureJnlpDownload" -Wait

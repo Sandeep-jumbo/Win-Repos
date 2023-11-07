@@ -1,0 +1,14 @@
+---
+- name: Run ReplicaDB Command
+  hosts: 10.10.5.181  # Replace with the name or IP of your Windows host
+  tasks:
+    - name: Open Command Prompt as Administrator
+      win_shell: |
+        Start-Process cmd -ArgumentList '/K', 'runas /user:Administrator cmd' -Verb RunAs
+
+    - name: Wait for Command Prompt to open
+      win_shell: Start-Sleep 5
+
+    - name: Execute ReplicaDB Command
+      win_shell: |
+        C:\ReplicaDB\bin\replicadb --source-connect jdbc:sqlite:C:\sqlite\nareshDB.db --source-table sample_table --sink-connect jdbc:mysql://10.10.5.82:3306/sampledb --sink-user naresh --sink-password password
